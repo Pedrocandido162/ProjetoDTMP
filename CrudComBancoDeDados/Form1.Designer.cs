@@ -101,6 +101,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.label21 = new System.Windows.Forms.Label();
             this.panelCadastroFuncionario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDadosFuncionarios)).BeginInit();
             this.panelImpressoras.SuspendLayout();
@@ -192,7 +194,7 @@
             // 
             this.textNascimento.Location = new System.Drawing.Point(32, 141);
             this.textNascimento.Margin = new System.Windows.Forms.Padding(2);
-            this.textNascimento.Mask = "0000/00/00";
+            this.textNascimento.Mask = "00/00/0000";
             this.textNascimento.Name = "textNascimento";
             this.textNascimento.Size = new System.Drawing.Size(168, 20);
             this.textNascimento.TabIndex = 12;
@@ -421,7 +423,7 @@
             this.dataGridAparelho.Name = "dataGridAparelho";
             this.dataGridAparelho.RowHeadersWidth = 51;
             this.dataGridAparelho.RowTemplate.Height = 24;
-            this.dataGridAparelho.Size = new System.Drawing.Size(646, 162);
+            this.dataGridAparelho.Size = new System.Drawing.Size(739, 270);
             this.dataGridAparelho.TabIndex = 14;
             // 
             // label7
@@ -675,6 +677,8 @@
             // 
             // panelManutenção
             // 
+            this.panelManutenção.Controls.Add(this.label21);
+            this.panelManutenção.Controls.Add(this.richTextBox1);
             this.panelManutenção.Controls.Add(this.label20);
             this.panelManutenção.Controls.Add(this.label5);
             this.panelManutenção.Controls.Add(this.maskedTextBox1);
@@ -726,6 +730,7 @@
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(69, 20);
             this.maskedTextBox1.TabIndex = 18;
+            this.maskedTextBox1.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
             // 
             // textBox3
             // 
@@ -744,7 +749,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(26, 241);
+            this.dataGridView1.Location = new System.Drawing.Point(32, 303);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -754,7 +759,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(403, 182);
+            this.button1.Location = new System.Drawing.Point(354, 259);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -764,7 +769,7 @@
             // 
             // ConsultarManutenção
             // 
-            this.ConsultarManutenção.Location = new System.Drawing.Point(314, 182);
+            this.ConsultarManutenção.Location = new System.Drawing.Point(273, 259);
             this.ConsultarManutenção.Name = "ConsultarManutenção";
             this.ConsultarManutenção.Size = new System.Drawing.Size(75, 23);
             this.ConsultarManutenção.TabIndex = 11;
@@ -774,7 +779,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(216, 182);
+            this.button3.Location = new System.Drawing.Point(192, 259);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 5;
@@ -784,7 +789,7 @@
             // 
             // AtualizarManutenção
             // 
-            this.AtualizarManutenção.Location = new System.Drawing.Point(116, 182);
+            this.AtualizarManutenção.Location = new System.Drawing.Point(111, 259);
             this.AtualizarManutenção.Name = "AtualizarManutenção";
             this.AtualizarManutenção.Size = new System.Drawing.Size(75, 23);
             this.AtualizarManutenção.TabIndex = 6;
@@ -794,7 +799,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(26, 182);
+            this.button5.Location = new System.Drawing.Point(30, 259);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 4;
@@ -889,13 +894,30 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(33, 187);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(311, 66);
+            this.richTextBox1.TabIndex = 21;
+            this.richTextBox1.Text = "";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(29, 171);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(132, 13);
+            this.label21.TabIndex = 22;
+            this.label21.Text = "Descrição da manutenção";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1210, 609);
-            this.Controls.Add(this.panelManutenção);
             this.Controls.Add(this.panelImpressoras);
+            this.Controls.Add(this.panelManutenção);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelCadastroFuncionario);
             this.Controls.Add(this.panelEscolas);
@@ -995,6 +1017,8 @@
         private System.Windows.Forms.MaskedTextBox maskedTextBox1;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button atualizarAparelho;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
