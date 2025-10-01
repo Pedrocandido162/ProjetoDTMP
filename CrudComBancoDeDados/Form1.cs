@@ -23,7 +23,7 @@ namespace CrudComBancoDeDados
         {
             AutoCompleteStringCollection nomes = new AutoCompleteStringCollection();
 
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             string query = "SELECT nome FROM funcionarios"; // ajuste conforme sua tabela
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
@@ -56,7 +56,7 @@ namespace CrudComBancoDeDados
         private void CadastrarButton_Click(object sender, EventArgs e)//Cadastro funcionarios
         {
          
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             try
@@ -106,7 +106,7 @@ namespace CrudComBancoDeDados
         }
         private void button1_Click(object sender, EventArgs e)//Atualizar Funcionarios
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -129,7 +129,7 @@ namespace CrudComBancoDeDados
         }
         private void textExibir_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -148,7 +148,7 @@ namespace CrudComBancoDeDados
         }
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             try
@@ -204,7 +204,7 @@ namespace CrudComBancoDeDados
         }
         private void buttonConsulta_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -231,7 +231,7 @@ namespace CrudComBancoDeDados
 
         private void CadastrarAparelhos_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
 
@@ -276,7 +276,7 @@ namespace CrudComBancoDeDados
 
         private void AtualizarAparelho_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -301,7 +301,7 @@ namespace CrudComBancoDeDados
 
         private void DeleteAparelhos_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             try
@@ -357,7 +357,7 @@ namespace CrudComBancoDeDados
         }
         private void atualizarAparelho_Click_1(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -382,7 +382,7 @@ namespace CrudComBancoDeDados
 
         private void ConsultarAparelhos_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -409,7 +409,7 @@ namespace CrudComBancoDeDados
         private void ExibirAparelhos_Click(object sender, EventArgs e)
         
          {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -576,7 +576,7 @@ namespace CrudComBancoDeDados
 
         private void CadastrarEscola_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             try
@@ -608,7 +608,7 @@ namespace CrudComBancoDeDados
 
         private void DeleteEscolas_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
 
             try
@@ -670,7 +670,7 @@ namespace CrudComBancoDeDados
 
         private void ExibirEscolas_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -690,7 +690,7 @@ namespace CrudComBancoDeDados
 
         private void exibirImpressoraEscola_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {
@@ -733,7 +733,7 @@ namespace CrudComBancoDeDados
 
         private void button5_Click(object sender, EventArgs e) // Cadastrar Manutenção
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -759,7 +759,7 @@ namespace CrudComBancoDeDados
         {
 
 
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -781,7 +781,7 @@ namespace CrudComBancoDeDados
         private void AtualizarManutenção_Click(object sender, EventArgs e)//Atualizar Manutenção
         {
        
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -808,7 +808,7 @@ namespace CrudComBancoDeDados
         {
             
  
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -842,7 +842,7 @@ namespace CrudComBancoDeDados
         private void button3_Click(object sender, EventArgs e) //Deletar Manutenção
         {
        
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
