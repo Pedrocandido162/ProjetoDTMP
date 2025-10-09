@@ -765,7 +765,7 @@ namespace CrudComBancoDeDados
                 try
                 {
                     connection.Open();
-                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM manutencao", connection);
+                    MySqlDataAdapter da = new MySqlDataAdapter("SELECT manutencao.id,funcionarios.nome,dispositivos.aparelho,manutencao.data_manutencao,manutencao.descricao FROM manutencao INNER JOIN funcionarios ON manutencao.funcionario_id = funcionarios.id INNER JOIN dispositivos ON manutencao.dispositivos_id = dispositivos.id", connection);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dataGridView1.DataSource = dt;
@@ -790,10 +790,10 @@ namespace CrudComBancoDeDados
                     string updateQuery = "UPDATE manutencao SET funcionario_id = @id_funcionario, aparelho_id = @id_aparelho, data_manutencao = @data_manutencao, descricao = @descricao WHERE id = @id";
                     MySqlCommand cmd = new MySqlCommand(updateQuery, connection);
                     cmd.Parameters.AddWithValue("@id", textBox2.Text);
-                    cmd.Parameters.AddWithValue("@id_funcionario", textBox2.Text);
-                    cmd.Parameters.AddWithValue("@id_aparelho", textBox1.Text);
+                    cmd.Parameters.AddWithValue("@id_funcionario", textBox1.Text);
+                    cmd.Parameters.AddWithValue("@id_aparelho", textBox3.Text);
                     cmd.Parameters.AddWithValue("@data_manutencao", maskedTextBox1.Text);
-                    cmd.Parameters.AddWithValue("@descricao", textBox3.Text);
+                    cmd.Parameters.AddWithValue("@descricao", richTextBox1.Text);
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Manutenção atualizada com sucesso!");
                 }
@@ -814,16 +814,17 @@ namespace CrudComBancoDeDados
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM manutencao WHERE id = @id";
+                    string query = "SELECT * FROM manutencao INNER JOIN funcionarios ON manutencao.funcionario_id = funcionarios.id INNER JOIN dispositivos ON manutencao.dispositivos_id = dispositivos.id  WHERE manutencao.id = @id";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
                     cmd.Parameters.AddWithValue("@id", textBox2.Text);
                     using (MySqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-                            textBox1.Text = dr["id_aparelho"].ToString();
-                            maskedTextBox1.Text = Convert.ToDateTime(dr["data_manutencao"]).ToString("yyyy/MM/dd");
-                            textBox3.Text = dr["descricao"].ToString();
+                            textBox1.Text = dr["funcionario_id"].ToString()+": " + dr["nome"];
+                            textBox3.Text = dr["dispositivos_id"].ToString() + ": " + dr["aparelho"];
+                            maskedTextBox1.Text = Convert.ToDateTime(dr["data_manutencao"]).ToString("dd/MM/yyyy");
+                            richTextBox1.Text = dr["descricao"].ToString();
                         }
                         else
                         {
@@ -864,10 +865,46 @@ namespace CrudComBancoDeDados
 
         private void button5_Click_1(object sender, EventArgs e)
         {
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                DateTime nascimento;
+                if (!DateTime.TryParseExact(maskedTextBox1.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out nascimento))
+                {
+                    MessageBox.Show("Data de nascimento inválida. Use o formato DD/MM/AAAA.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string dataFormatada = nascimento.ToString("yyyy-MM-dd");
+
+                // Se não existir, faz o INSERT
+                string insertQuery = "INSERT INTO manutencao (dispositivos_id,funcionario_id,data_manutencao,descricao) VALUES (@id_aparelho,@id_funcionario,@data_manutencao,@descricao)";
+                MySqlCommand cmd = new MySqlCommand(insertQuery, connection);
+                cmd.Parameters.AddWithValue("@id_funcionario", textBox1.Text);
+                cmd.Parameters.AddWithValue("@id_aparelho", textBox3.Text);
+                cmd.Parameters.AddWithValue("@data_manutencao", dataFormatada);
+                cmd.Parameters.AddWithValue("@descricao", richTextBox1.Text);
+                cmd.ExecuteNonQuery();
+                long idGerado = cmd.LastInsertedId;
+                MessageBox.Show($"Aparelho cadastrado com sucesso:\nID:{idGerado}\nID Funcionario:{textBox1.Text}\nId Data Manutenção:{maskedTextBox1.Text}\n Descrição:{richTextBox1.Text}", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao cadastrar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
 
         }
 
-        private void maskedTextBox1_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        private void textBox2_TextChanged_1(object sender, EventArgs e)
         {
 
         }

@@ -35,7 +35,6 @@
             this.atualizarButton = new System.Windows.Forms.Button();
             this.panelCadastroFuncionario = new System.Windows.Forms.Panel();
             this.dgvDadosFuncionarios = new System.Windows.Forms.DataGridView();
-            this.label6 = new System.Windows.Forms.Label();
             this.textNascimento = new System.Windows.Forms.MaskedTextBox();
             this.ButtonExibir = new System.Windows.Forms.Button();
             this.buttonConsulta = new System.Windows.Forms.Button();
@@ -148,7 +147,6 @@
             // panelCadastroFuncionario
             // 
             this.panelCadastroFuncionario.Controls.Add(this.dgvDadosFuncionarios);
-            this.panelCadastroFuncionario.Controls.Add(this.label6);
             this.panelCadastroFuncionario.Controls.Add(this.textNascimento);
             this.panelCadastroFuncionario.Controls.Add(this.ButtonExibir);
             this.panelCadastroFuncionario.Controls.Add(this.buttonConsulta);
@@ -179,24 +177,13 @@
             this.dgvDadosFuncionarios.Size = new System.Drawing.Size(646, 162);
             this.dgvDadosFuncionarios.TabIndex = 14;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(214, 145);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Ano, mês, dia";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
             // textNascimento
             // 
-            this.textNascimento.Location = new System.Drawing.Point(32, 141);
+            this.textNascimento.Location = new System.Drawing.Point(32, 108);
             this.textNascimento.Margin = new System.Windows.Forms.Padding(2);
             this.textNascimento.Mask = "00/00/0000";
             this.textNascimento.Name = "textNascimento";
-            this.textNascimento.Size = new System.Drawing.Size(168, 20);
+            this.textNascimento.Size = new System.Drawing.Size(65, 20);
             this.textNascimento.TabIndex = 12;
             this.textNascimento.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.textNascimento_MaskInputRejected);
             // 
@@ -234,7 +221,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(31, 117);
+            this.label3.Location = new System.Drawing.Point(32, 90);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
@@ -244,7 +231,7 @@
             // 
             // textNome
             // 
-            this.textNome.Location = new System.Drawing.Point(33, 80);
+            this.textNome.Location = new System.Drawing.Point(32, 68);
             this.textNome.Margin = new System.Windows.Forms.Padding(2);
             this.textNome.Name = "textNome";
             this.textNome.Size = new System.Drawing.Size(275, 20);
@@ -253,7 +240,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 64);
+            this.label1.Location = new System.Drawing.Point(34, 53);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
@@ -272,7 +259,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 15);
+            this.label2.Location = new System.Drawing.Point(34, 16);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(16, 13);
@@ -743,7 +730,7 @@
             // 
             this.maskedTextBox1.Location = new System.Drawing.Point(32, 145);
             this.maskedTextBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.maskedTextBox1.Mask = "0000/00/00";
+            this.maskedTextBox1.Mask = "00/00/0000";
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(69, 20);
             this.maskedTextBox1.TabIndex = 18;
@@ -771,7 +758,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(646, 162);
+            this.dataGridView1.Size = new System.Drawing.Size(767, 265);
             this.dataGridView1.TabIndex = 14;
             // 
             // button1
@@ -869,6 +856,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(99, 20);
             this.textBox2.TabIndex = 2;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged_1);
             // 
             // label19
             // 
@@ -916,10 +904,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1210, 609);
-            this.Controls.Add(this.panelImpressoras);
             this.Controls.Add(this.panelManutenção);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panelImpressoras);
             this.Controls.Add(this.panelCadastroFuncionario);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelEscolas);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.MaximizeBox = false;
@@ -963,7 +951,6 @@
         private System.Windows.Forms.Button Escolas;
         private System.Windows.Forms.Button Manutenções;
         private System.Windows.Forms.MaskedTextBox textNascimento;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DataGridView dgvDadosFuncionarios;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Panel panelImpressoras;
