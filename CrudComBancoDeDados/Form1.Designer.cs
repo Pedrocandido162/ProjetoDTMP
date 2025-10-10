@@ -80,13 +80,13 @@
             this.txtidescola = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.panelManutenção = new System.Windows.Forms.Panel();
+            this.ConsultarFun = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.ConsultarManutenção = new System.Windows.Forms.Button();
@@ -102,6 +102,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.ConsultaApa = new System.Windows.Forms.Button();
             this.panelCadastroFuncionario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDadosFuncionarios)).BeginInit();
             this.panelImpressoras.SuspendLayout();
@@ -664,13 +665,14 @@
             // 
             // panelManutenção
             // 
+            this.panelManutenção.Controls.Add(this.ConsultaApa);
+            this.panelManutenção.Controls.Add(this.ConsultarFun);
             this.panelManutenção.Controls.Add(this.label21);
             this.panelManutenção.Controls.Add(this.richTextBox1);
             this.panelManutenção.Controls.Add(this.label20);
             this.panelManutenção.Controls.Add(this.label5);
             this.panelManutenção.Controls.Add(this.maskedTextBox1);
             this.panelManutenção.Controls.Add(this.textBox3);
-            this.panelManutenção.Controls.Add(this.dateTimePicker1);
             this.panelManutenção.Controls.Add(this.dataGridView1);
             this.panelManutenção.Controls.Add(this.button1);
             this.panelManutenção.Controls.Add(this.ConsultarManutenção);
@@ -690,6 +692,16 @@
             this.panelManutenção.TabIndex = 21;
             this.panelManutenção.Visible = false;
             this.panelManutenção.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint_1);
+            // 
+            // ConsultarFun
+            // 
+            this.ConsultarFun.Location = new System.Drawing.Point(354, 259);
+            this.ConsultarFun.Name = "ConsultarFun";
+            this.ConsultarFun.Size = new System.Drawing.Size(125, 23);
+            this.ConsultarFun.TabIndex = 23;
+            this.ConsultarFun.Text = "Consulta funcionarios";
+            this.ConsultarFun.UseVisualStyleBackColor = true;
+            this.ConsultarFun.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // label21
             // 
@@ -743,13 +755,6 @@
             this.textBox3.Size = new System.Drawing.Size(190, 20);
             this.textBox3.TabIndex = 17;
             // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(547, 371);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 16;
-            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -760,10 +765,11 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(767, 265);
             this.dataGridView1.TabIndex = 14;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(354, 259);
+            this.button1.Location = new System.Drawing.Point(597, 259);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -899,6 +905,15 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // ConsultaApa
+            // 
+            this.ConsultaApa.Location = new System.Drawing.Point(485, 259);
+            this.ConsultaApa.Name = "ConsultaApa";
+            this.ConsultaApa.Size = new System.Drawing.Size(106, 23);
+            this.ConsultaApa.TabIndex = 24;
+            this.ConsultaApa.Text = "Consulta aparelho";
+            this.ConsultaApa.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -997,7 +1012,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label5;
@@ -1006,6 +1020,8 @@
         private System.Windows.Forms.Button atualizarAparelho;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button ConsultarFun;
+        private System.Windows.Forms.Button ConsultaApa;
     }
 }
 

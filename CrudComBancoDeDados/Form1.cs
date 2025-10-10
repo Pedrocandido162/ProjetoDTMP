@@ -838,7 +838,8 @@ namespace CrudComBancoDeDados
                 }
             }
         }
-        
+
+    
 
         private void button3_Click(object sender, EventArgs e) //Deletar Manutenção
         {
@@ -907,6 +908,34 @@ namespace CrudComBancoDeDados
         private void textBox2_TextChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            string connectionString = "server=localhost;user=root;database=dtmp;password=@#dtmp#@;port=3306;";
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string Query = "SELECT manutencao.id,funcionarios.nome,dispositivos.aparelho,manutencao.data_manutencao,manutencao.descricao FROM manutencao INNER JOIN funcionarios ON manutencao.funcionario_id = funcionarios.id INNER JOIN dispositivos ON manutencao.dispositivos_id = dispositivos.id where funcionario_id=@idFuncionario";
+                    MySqlCommand cmd = new MySqlCommand(Query, connection);
+                    cmd.Parameters.AddWithValue("@idFuncionario", textBox1.Text);
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao exibir: " + ex.Message);
+                }
+            }
         }
     }
 }
