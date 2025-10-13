@@ -80,6 +80,7 @@
             this.txtidescola = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.panelManutenção = new System.Windows.Forms.Panel();
+            this.ConsultaApa = new System.Windows.Forms.Button();
             this.ConsultarFun = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -102,7 +103,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.ConsultaApa = new System.Windows.Forms.Button();
             this.panelCadastroFuncionario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDadosFuncionarios)).BeginInit();
             this.panelImpressoras.SuspendLayout();
@@ -501,9 +501,9 @@
             this.label11.Location = new System.Drawing.Point(32, 53);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(42, 13);
+            this.label11.Size = new System.Drawing.Size(49, 13);
             this.label11.TabIndex = 3;
-            this.label11.Text = "Modelo";
+            this.label11.Text = "Aparelho";
             // 
             // textIdAparelho
             // 
@@ -692,6 +692,15 @@
             this.panelManutenção.TabIndex = 21;
             this.panelManutenção.Visible = false;
             this.panelManutenção.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint_1);
+            // 
+            // ConsultaApa
+            // 
+            this.ConsultaApa.Location = new System.Drawing.Point(485, 259);
+            this.ConsultaApa.Name = "ConsultaApa";
+            this.ConsultaApa.Size = new System.Drawing.Size(106, 23);
+            this.ConsultaApa.TabIndex = 24;
+            this.ConsultaApa.Text = "Consulta aparelho";
+            this.ConsultaApa.UseVisualStyleBackColor = true;
             // 
             // ConsultarFun
             // 
@@ -905,22 +914,13 @@
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // ConsultaApa
-            // 
-            this.ConsultaApa.Location = new System.Drawing.Point(485, 259);
-            this.ConsultaApa.Name = "ConsultaApa";
-            this.ConsultaApa.Size = new System.Drawing.Size(106, 23);
-            this.ConsultaApa.TabIndex = 24;
-            this.ConsultaApa.Text = "Consulta aparelho";
-            this.ConsultaApa.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1210, 609);
-            this.Controls.Add(this.panelManutenção);
             this.Controls.Add(this.panelImpressoras);
+            this.Controls.Add(this.panelManutenção);
             this.Controls.Add(this.panelCadastroFuncionario);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelEscolas);
