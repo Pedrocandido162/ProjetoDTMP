@@ -1,10 +1,10 @@
-﻿using System;
+﻿using System.Globalization;
+using System;
 using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Globalization;
+
 
 
 namespace CrudComBancoDeDados
@@ -53,197 +53,176 @@ namespace CrudComBancoDeDados
             mostrarPainel.Visible = true;
 
         }
-        private void CadastrarButton_Click(object sender, EventArgs e)//Cadastro funcionarios
+        // Conexão padrão
+        string connectionString = "server=localhost;user=root;database=cadastro;password=2903477Pe#;port=3306;";
+
+        // Cadastrar Funcionário
+        private void CadastrarButton_Click(object sender, EventArgs e)
         {
-         
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-
-            try
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                connection.Open();
-
-                // Verificar se o nome já existe
-                string verificaQuery = "SELECT COUNT(*) FROM funcionarios WHERE nome = @nome";
-                MySqlCommand verificaComando = new MySqlCommand(verificaQuery, connection);
-                verificaComando.Parameters.AddWithValue("@nome", textNome.Text);
-
-                int count = Convert.ToInt32(verificaComando.ExecuteScalar());
-
-                if (count > 0)
+                try
                 {
-                    MessageBox.Show("Já existe um funcionário com esse nome.", "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    conn.Open();
+                    string query = "INSERT INTO funcionarios (nome, telefone, email, ativo) VALUES (@nome, @telefone, @email, @ativo)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@nome", textNome.Text);
+                    cmd.Parameters.AddWithValue("@telefone", textTelefone.Text);
+                    cmd.Parameters.AddWithValue("@email", textEmail.Text);
+                    cmd.Parameters.AddWithValue("@ativo", comboBoxAtivo.Text == "Sim" ? 1 : 0);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Funcionário cadastrado com sucesso!");
                 }
-
-                // Converter a data para o formato yyyy-MM-dd
-                DateTime nascimento;
-                if (!DateTime.TryParseExact(textNascimento.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out nascimento))
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Data de nascimento inválida. Use o formato DD/MM/AAAA.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                string dataFormatada = nascimento.ToString("yyyy-MM-dd");
-
-                // Faz o INSERT
-                string insertQuery = "INSERT INTO funcionarios (nome, nascimento) VALUES (@nome, @nascimento)";
-                MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection);
-                insertCommand.Parameters.AddWithValue("@nome", textNome.Text);
-                insertCommand.Parameters.AddWithValue("@nascimento", dataFormatada);
-                insertCommand.ExecuteNonQuery();
-
-                MessageBox.Show("Funcionário cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao cadastrar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
-        private void button1_Click(object sender, EventArgs e)//Atualizar Funcionarios
-        {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            try
-            {
-                connection.Open();
-                MySqlCommand comand = connection.CreateCommand();
-                comand.CommandText = "UPDATE pessoas SET nome = @nome, nascimento = @nascimento WHERE id = @id "; ;
-                comand.Parameters.AddWithValue("@nome", textNome.Text);
-                comand.Parameters.AddWithValue("@Nascimento", textNascimento.Text);
-                comand.Parameters.AddWithValue("@id", textId.Text);
-                comand.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
-        private void textExibir_Click(object sender, EventArgs e)
-        {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            try
-            {
-                connection.Open();
-                MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM funcionarios", connection);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dgvDadosFuncionarios.DataSource = dt;
-
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-            finally { connection.Close(); }
-        }
-        private void DeleteButton_Click(object sender, EventArgs e)
-        {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-
-            try
-            {
-                connection.Open();
-
-                // Passo 1: Buscar os dados do funcionário
-                MySqlCommand selectCmd = connection.CreateCommand();
-                selectCmd.CommandText = "SELECT * FROM funcionarios WHERE id = @id";
-                selectCmd.Parameters.AddWithValue("@id", textId.Text);
-
-                MySqlDataReader reader = selectCmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    // Construindo uma mensagem com os dados
-                    string nome = reader["nome"].ToString();
-                    string nascimento = reader["nascimento"].ToString();
-                    // Adicione outros campos conforme necessário
-
-                    reader.Close(); // fecha antes de usar outro comando
-
-                    DialogResult confirm = MessageBox.Show(
-                        $"Você tem certeza que deseja deletar este funcionário?\n\n" +
-                        $"ID: {textId.Text}\nNome: {nome}\nNascimento: {nascimento}",
-                        "Confirmar exclusão",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
-
-                    if (confirm == DialogResult.Yes)
-                    {
-                        MySqlCommand deleteCmd = connection.CreateCommand();
-                        deleteCmd.CommandText = "DELETE FROM funcionarios WHERE id = @id";
-                        deleteCmd.Parameters.AddWithValue("@id", textId.Text);
-                        deleteCmd.ExecuteNonQuery();
-                        MessageBox.Show("Funcionário deletado com sucesso!");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Funcionário não encontrado.");
+                    MessageBox.Show("Erro ao cadastrar: " + ex.Message);
                 }
             }
-            catch (Exception error)
+        }
+
+        // Atualizar Funcionário
+        private void button1_Click(object sender, EventArgs e)
+        {
+            // Monta mensagem de confirmação
+            string msg = $"Deseja realmente atualizar este funcionário?\n\n" +
+                         $"ID: {textId.Text}\n" +
+                         $"Nome: {textNome.Text}\n" +
+                         $"Telefone: {textTelefone.Text}\n" +
+                         $"Email: {textEmail.Text}\n" +
+                         $"Ativo: {comboBoxAtivo.Text}";
+
+            var result = MessageBox.Show(msg, "Confirmar atualização", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MessageBox.Show("Erro: " + error.Message);
-            }
-            finally
-            {
-                connection.Close();
+                try
+                {
+                    conn.Open();
+                    string query = "UPDATE funcionarios SET nome=@nome, telefone=@telefone, email=@email, ativo=@ativo WHERE idfuncionario=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", textId.Text);
+                    cmd.Parameters.AddWithValue("@nome", textNome.Text);
+                    cmd.Parameters.AddWithValue("@telefone", textTelefone.Text);
+                    cmd.Parameters.AddWithValue("@email", textEmail.Text);
+                    cmd.Parameters.AddWithValue("@ativo", comboBoxAtivo.Text == "Sim" ? 1 : 0);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Funcionário atualizado com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao atualizar: " + ex.Message);
+                }
             }
         }
+
+        // Consultar Funcionário (por Id)
         private void buttonConsulta_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            try
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                connection.Open();
-                MySqlCommand comand = connection.CreateCommand();
-                comand.CommandText = "SELECT * FROM funcionarios WHERE id =@id";
-                comand.Parameters.AddWithValue("@id", textId.Text);
-                MySqlDataReader dr;
-                dr = comand.ExecuteReader();
-                while (dr.Read())
+                try
                 {
-                    textNome.Text = Convert.ToString(dr["nome"]);
-                    textNascimento.Text = Convert.ToString(dr["nascimento"]);
+                    conn.Open();
+                    string query = "SELECT * FROM funcionarios WHERE idfuncionario=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", textId.Text);
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            textNome.Text = dr["nome"].ToString();
+                            textTelefone.Text = dr["telefone"].ToString();
+                            textEmail.Text = dr["email"].ToString();
+                            comboBoxAtivo.Text = Convert.ToBoolean(dr["ativo"]) ? "Sim" : "Não";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Funcionário não encontrado.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao consultar: " + ex.Message);
                 }
             }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-            finally { connection.Close(); }
         }
-    
+
+        // Exibir Todos Funcionários
+        private void textExibir_Click(object sender, EventArgs e)
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM funcionarios";
+                    MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridFuncionarios.DataSource = dt;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao exibir: " + ex.Message);
+                }
+            }
+        }
+
+        // Deletar Funcionário
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            // Monta mensagem de confirmação
+            string msg = $"Deseja realmente deletar este funcionário?\n\n" +
+                         $"ID: {textId.Text}\n" +
+                         $"Nome: {textNome.Text}\n" +
+                         $"Telefone: {textTelefone.Text}\n" +
+                         $"Email: {textEmail.Text}\n" +
+                         $"Ativo: {comboBoxAtivo.Text}";
+
+            var result = MessageBox.Show(msg, "Confirmar exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result != DialogResult.Yes)
+                return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "DELETE FROM funcionarios WHERE idfuncionario=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", textId.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Funcionário deletado com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao deletar: " + ex.Message);
+                }
+            }
+        }
+
+
 
 
         private void CadastrarAparelhos_Click(object sender, EventArgs e)
         {
+            CarregarEscolasNoComboBox();
             string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
             MySqlConnection connection = new MySqlConnection(connectionString);
-
 
             try
             {
                 connection.Open();
 
+                int idEscola = Convert.ToInt32(comboBoxEscola.SelectedValue);
 
-                // Verificar se o nome já existe
+                // Verificar se o ID da escola existe
                 string verificaQuery = "SELECT COUNT(*) FROM escolas WHERE id = @idescola";
                 MySqlCommand verificaComando = new MySqlCommand(verificaQuery, connection);
-                verificaComando.Parameters.AddWithValue("@idescola", textIdEscola.Text);
+                verificaComando.Parameters.AddWithValue("@idescola", idEscola);
 
                 int count = Convert.ToInt32(verificaComando.ExecuteScalar());
 
@@ -252,16 +231,16 @@ namespace CrudComBancoDeDados
                     MessageBox.Show("ID da escola inválido.");
                     return;
                 }
-                // Se não existir, faz o INSERT
+                // Se existir, faz o INSERT
                 string insertQuery = "INSERT INTO dispositivos (aparelho,estado,idescola) VALUES (@aparelho, @estado,@idescola)";
                 MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection);
                 insertCommand.Parameters.AddWithValue("@aparelho", ModeloAparelho.Text);
                 insertCommand.Parameters.AddWithValue("@estado", comboBoxAparelho.Text);
-                insertCommand.Parameters.AddWithValue("@idescola", textIdEscola.Text);
+                insertCommand.Parameters.AddWithValue("@idescola", idEscola);
                 insertCommand.ExecuteNonQuery();
                 long idGerado = insertCommand.LastInsertedId;
 
-                MessageBox.Show($"Aparelho cadastrado com sucesso:\nID:{idGerado}\nAparelho:{ModeloAparelho.Text}\nStatus:{comboBoxAparelho.Text}\nID da escola:{textIdEscola.Text}", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Aparelho cadastrado com sucesso:\nID:{idGerado}\nAparelho:{ModeloAparelho.Text}\nStatus:{comboBoxAparelho.Text}\nID da escola:{idEscola}", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -271,7 +250,6 @@ namespace CrudComBancoDeDados
             {
                 connection.Close();
             }
-
         }
 
         private void AtualizarAparelho_Click(object sender, EventArgs e)
@@ -285,7 +263,7 @@ namespace CrudComBancoDeDados
                 comand.CommandText = "UPDATE dispositivos SET aparelho = @nome, estado= @estado, idescola=@idescola WHERE id = @id "; 
                 comand.Parameters.AddWithValue("@nome", ModeloAparelho.Text);
                 comand.Parameters.AddWithValue("@estado", comboBoxAparelho.Text);
-                comand.Parameters.AddWithValue("@idescola", textIdEscola.Text);
+                comand.Parameters.AddWithValue("@idescola", comboBoxEscola.Text);
                 comand.Parameters.AddWithValue("@id", textIdAparelho.Text);
                 comand.ExecuteNonQuery();
             }
@@ -366,7 +344,7 @@ namespace CrudComBancoDeDados
                 comand.CommandText = "UPDATE dispositivos SET aparelho = @nome, estado= @estado, idescola=@idescola WHERE id = @id ";
                 comand.Parameters.AddWithValue("@nome", ModeloAparelho.Text);
                 comand.Parameters.AddWithValue("@estado", comboBoxAparelho.Text);
-                comand.Parameters.AddWithValue("@idescola", textIdEscola.Text);
+                comand.Parameters.AddWithValue("@idescola", comboBoxEscola.Text);
                 comand.Parameters.AddWithValue("@id", textIdAparelho.Text);
                 comand.ExecuteNonQuery();
             }
@@ -396,7 +374,7 @@ namespace CrudComBancoDeDados
                 {
                     ModeloAparelho.Text = Convert.ToString(dr["aparelho"]);
                     comboBoxAparelho.Text = Convert.ToString(dr["estado"]);
-                    textIdEscola.Text = Convert.ToString(dr["idescola"]);
+                    comboBoxEscola.Text = Convert.ToString(dr["idescola"]);
                 }
             }
             catch (Exception error)
@@ -501,6 +479,8 @@ namespace CrudComBancoDeDados
         private void Impressoras_Click(object sender, EventArgs e)
         {
             ControlePanel(panelImpressoras);
+            
+            CarregarEscolasNoComboBox();
         }
 
         private void Escolas_Click(object sender, EventArgs e)
@@ -574,118 +554,161 @@ namespace CrudComBancoDeDados
 
         }
 
+        // Cadastrar Escola
         private void CadastrarEscola_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-
-            try
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                connection.Open();
-                // Se não existir, faz o INSERT
-                string insertQuery = "INSERT INTO escolas (nome) VALUES (@nome)";
-                MySqlCommand insertCommand = new MySqlCommand(insertQuery, connection);
-                insertCommand.Parameters.AddWithValue("@nome", txtnomeEscola.Text);
- 
-                insertCommand.ExecuteNonQuery();
-
-                MessageBox.Show("Escola cadastrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao cadastrar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                connection.Close();
+                try
+                {
+                    conn.Open();
+                    string query = @"INSERT INTO escolas 
+                        (nome_escola, endereco, nome_gestor, telefone_gestor, nome_secretario, telefone_secretario) 
+                        VALUES (@nome, @endereco, @nome_gestor, @telefone_gestor, @nome_secretario, @telefone_secretario)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@nome", txtnomeEscola.Text);
+                    cmd.Parameters.AddWithValue("@endereco", txtEnderecoEscola.Text);
+                    cmd.Parameters.AddWithValue("@nome_gestor", txtNomeGestor.Text);
+                    cmd.Parameters.AddWithValue("@telefone_gestor", txtTelefoneGestor.Text);
+                    cmd.Parameters.AddWithValue("@nome_secretario", txtNomeSecretario.Text);
+                    cmd.Parameters.AddWithValue("@telefone_secretario", txtNomeSecretario.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Escola cadastrada com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao cadastrar: " + ex.Message);
+                }
             }
         }
 
+        // Atualizar Escola
         private void AtualizarEscola_Click(object sender, EventArgs e)
         {
+            string msg = $"Deseja realmente atualizar esta escola?\n\n" +
+                         $"ID: {txtidescola.Text}\n" +
+                         $"Nome: {txtnomeEscola.Text}\n" +
+                         $"Endereço: {txtEnderecoEscola.Text}\n" +
+                         $"Gestor: {txtNomeGestor.Text} - {txtTelefoneGestor.Text}\n" +
+                         $"Secretário: {txtNomeSecretario.Text} - {txtTelefoneSecretario.Text}";
 
+            var result = MessageBox.Show(msg, "Confirmar atualização", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"UPDATE escolas SET 
+                        nome_escola=@nome, endereco=@endereco, nome_gestor=@nome_gestor, telefone_gestor=@telefone_gestor, 
+                        nome_secretario=@nome_secretario, telefone_secretario=@telefone_secretario 
+                        WHERE id=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtidescola.Text);
+                    cmd.Parameters.AddWithValue("@nome", txtnomeEscola.Text);
+                    cmd.Parameters.AddWithValue("@endereco", txtEnderecoEscola.Text);
+                    cmd.Parameters.AddWithValue("@nome_gestor", txtNomeGestor.Text);
+                    cmd.Parameters.AddWithValue("@telefone_gestor", txtTelefoneGestor.Text);
+                    cmd.Parameters.AddWithValue("@nome_secretario", txtNomeSecretario.Text);
+                    cmd.Parameters.AddWithValue("@telefone_secretario", txtTelefoneSecretario.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Escola atualizada com sucesso!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao atualizar: " + ex.Message);
+                }
+            }
         }
 
+        // Deletar Escola
         private void DeleteEscolas_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
+            string msg = $"Deseja realmente deletar esta escola?\n\n" +
+                         $"ID: {txtidescola.Text}\n" +
+                         $"Nome: {txtnomeEscola.Text}\n" +
+                         $"Endereço: {txtEnderecoEscola.Text}\n" +
+                         $"Gestor: {txtNomeGestor.Text} - {txtTelefoneGestor.Text}\n" +
+                         $"Secretário: {txtNomeSecretario.Text} - {txtTelefoneSecretario.Text}";
 
-            try
+            var result = MessageBox.Show(msg, "Confirmar exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result != DialogResult.Yes)
+                return;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                connection.Open();
-
-                // Passo 1: Buscar os dados do funcionário
-                MySqlCommand selectCmd = connection.CreateCommand();
-                selectCmd.CommandText = "SELECT * FROM escolas WHERE id = @id";
-                selectCmd.Parameters.AddWithValue("@id", txtidescola.Text);
-
-                MySqlDataReader reader = selectCmd.ExecuteReader();
-
-                if (reader.Read())
+                try
                 {
-                    // Construindo uma mensagem com os dados
-                    string nome = reader["nome"].ToString();
-                    // Adicione outros campos conforme necessário
-
-                    reader.Close(); // fecha antes de usar outro comando
-
-                    string v = $"ID: {txtidescola.Text}\n Escolas: {nome}";
-                    DialogResult confirm = MessageBox.Show(
-                        $"Você tem certeza que deseja deletar este funcionário?\n\n" +
-                        v,
-                        "Confirmar exclusão",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Warning
-                    );
-
-                    if (confirm == DialogResult.Yes)
-                    {
-                        MySqlCommand deleteCmd = connection.CreateCommand();
-                        deleteCmd.CommandText = "DELETE FROM escolas WHERE id = @id";
-                        deleteCmd.Parameters.AddWithValue("@id", txtidescola.Text);
-                        deleteCmd.ExecuteNonQuery();
-                        MessageBox.Show("Aparelho deletado com sucesso!");
-                    }
+                    conn.Open();
+                    string query = "DELETE FROM escolas WHERE id=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtidescola.Text);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Escola deletada com sucesso!");
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Funcionário não encontrado.");
+                    MessageBox.Show("Erro ao deletar: " + ex.Message);
                 }
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show("Erro: " + error.Message);
-            }
-            finally
-            {
-                connection.Close();
             }
         }
 
+        // Consultar Escola por Id
         private void ConsultarEscolas_Click(object sender, EventArgs e)
         {
-
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM escolas WHERE id=@id";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtidescola.Text);
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            txtnomeEscola.Text = dr["nome_escola"].ToString();
+                            txtEnderecoEscola.Text = dr["endereco"].ToString();
+                            txtNomeGestor.Text = dr["nome_gestor"].ToString();
+                            txtTelefoneGestor.Text = dr["telefone_gestor"].ToString();
+                            txtNomeSecretario.Text = dr["nome_secretario"].ToString();
+                            txtTelefoneSecretario.Text = dr["telefone_secretario"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Escola não encontrada.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao consultar: " + ex.Message);
+                }
+            }
         }
 
+        // Exibir Todas as Escolas
         private void ExibirEscolas_Click(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            try
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                connection.Open();
-                MySqlDataAdapter da = new MySqlDataAdapter("SELECT * FROM escolas", connection);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                dataGridEscolas.DataSource = dt;
-
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM escolas";
+                    MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dataGridEscolas.DataSource = dt;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao exibir: " + ex.Message);
+                }
             }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
-            finally { connection.Close(); }
         }
 
         private void exibirImpressoraEscola_Click(object sender, EventArgs e)
@@ -695,7 +718,7 @@ namespace CrudComBancoDeDados
             try
             {
                 connection.Open();
-                MySqlDataAdapter da = new MySqlDataAdapter("SELECT dispositivos.idescola,dispositivos.id, dispositivos.aparelho, dispositivos.estado, escolas.nome FROM dispositivos INNER JOIN escolas ON dispositivos.idescola = escolas.id where escolas.id=@id;", connection);
+                MySqlDataAdapter da = new MySqlDataAdapter("SELECT dispositivos.idescola,dispositivos.id, dispositivos.aparelho, dispositivos.estado, escolas.nome_escola FROM dispositivos INNER JOIN escolas ON dispositivos.idescola = escolas.id where escolas.id=@id;", connection);
                 da.SelectCommand.Parameters.AddWithValue("@id", txtidescola.Text);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -925,7 +948,7 @@ namespace CrudComBancoDeDados
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            string connectionString = "server=localhost;user=root;database=dtmp;password=2903477Pe#;port=3306;";
+            string connectionString = "server=localhost;user=root;database=cadastro;password=2903477Pe#;port=3306;";
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
                 try
@@ -942,6 +965,54 @@ namespace CrudComBancoDeDados
                 catch (Exception ex)
                 {
                     MessageBox.Show("Erro ao exibir: " + ex.Message);
+                }
+            }
+        }
+
+        private void textTelefone_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void label27_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label26_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void CarregarEscolasNoComboBox()
+        {
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT id, nome_escola FROM escolas";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    comboBoxEscola.DataSource = dt;
+                    comboBoxEscola.DisplayMember = "nome_escola"; // O que aparece para o usuário
+                    comboBoxEscola.ValueMember = "id";            // O valor real (ID)
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao carregar escolas: " + ex.Message);
                 }
             }
         }
